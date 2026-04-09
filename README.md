@@ -1,5 +1,9 @@
 # mkdocs-repo-docs
 
+[![PyPI version](https://img.shields.io/pypi/v/mkdocs-repo-docs)](https://pypi.org/project/mkdocs-repo-docs/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/mkdocs-repo-docs)](https://pypi.org/project/mkdocs-repo-docs/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A [MkDocs](https://www.mkdocs.org/) plugin that auto-discovers markdown files scattered throughout your repository and includes them in your documentation site.
 
 ## The Problem
