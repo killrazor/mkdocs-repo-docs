@@ -1,14 +1,17 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # setuptools-scm needs full history for version
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -16,7 +19,14 @@ jobs:
           python-version: '3.12'
 
       - name: Install build tools
-        run: pip install build twine
+        run: pip install build twine setuptools-scm
+
+      - name: Verify version from tag
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          SCM_VERSION=$(python -m setuptools_scm)
+          echo "Tag: $TAG_VERSION"
+          echo "SCM: $SCM_VERSION"
 
       - name: Build package
         run: python -m build
@@ -26,3 +36,12 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: twine upload dist/*
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --title "${{ github.ref_name }}" \
+            --generate-notes \
+            dist/*

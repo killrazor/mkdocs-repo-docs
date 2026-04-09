@@ -1,4 +1,5 @@
 __pycache__/
+mkdocs_repo_docs/_version.py
 *.py[cod]
 *.egg-info/
 dist/
